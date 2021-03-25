@@ -4,8 +4,8 @@ services:
     container_name: node
     restart: always
     build: ./node-backend
-    ports:
-      - '5200:5200'
+    #ports:
+     # - '5200:5200'
     #  Hier stelltst du schon eine Vebrindung zwischen den beiden Containern her ;)
     links:
       - mongo
@@ -23,4 +23,4 @@ services:
     ports:
       - '80:80'
     links:
-      - mongo
+      - node

@@ -16,6 +16,8 @@
 
 # Ignore all files in any directory named build
 build
+# dmait nicht Datenbanken im Git landen
+dbdata/
 
 # Ignore doc/notes.txt, but not doc/server/arch.txt
 doc/*.txt

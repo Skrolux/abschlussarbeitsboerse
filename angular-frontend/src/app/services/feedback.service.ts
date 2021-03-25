@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
-const feedback_url: string = "http://localhost:5200/api/feedback";
+const feedback_url: string = "http://localhost/api/feedback";
 
 @Injectable({
   providedIn: 'root'

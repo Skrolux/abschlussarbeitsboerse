@@ -24,3 +24,4 @@ RUN npm run build --prod
 FROM nginx:1.19-alpine
 
 COPY --from=phase1 /app/dist/abschlussarbeitsboerse-frontend /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/conf.d/default.conf

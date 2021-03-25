@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { TokenStorageService } from './token-storage.service';
 
-const auth_url: string = "http://localhost:5200/api/auth";
+const auth_url: string = "http://localhost/api/auth";
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
