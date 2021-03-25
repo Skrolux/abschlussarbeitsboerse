@@ -1,13 +1,26 @@
-FROM node:latest
+#Phase 1
 
-WORKDIR /src
+#Hier bauen wir die Angular App zusammen
 
-COPY package*.json ./
+FROM node:latest as phase1
+
+RUN mkdir -p /app
+
+WORKDIR /app
+
+COPY package*.json /app
 
 RUN npm install
 
-COPY . .
+COPY . /app
 
-EXPOSE 4200
+RUN npm run build --prod
 
-CMD ["npm", "run", "build"]
+#Phase 2
+# Hier bauen wir den Webserver zusammen
+# Wir holen uns hier ein Image und kopieren anschließend die fertig kompilierte App 
+# in das Directory vom Webserver
+
+FROM nginx:1.19-alpine
+
+COPY --from=phase1 /app/dist/abschlussarbeitsboerse-frontend /usr/share/nginx/html
