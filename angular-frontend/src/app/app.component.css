@@ -1,0 +1,87 @@
+html,
+body {
+    height: 100%;
+}
+
+.wrapper {
+    min-height: 100%;
+    margin-bottom: -30px;
+    padding-bottom: 30px;
+}
+
+.body-wrapper {
+    padding-top: 0px;
+}
+
+.footer {
+    position: fixed;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: black;
+    color: white;
+    text-align: center;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    height: 30px;
+}
+
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 50px;
+    margin-bottom: 0;
+    border-radius: 0;
+    background-color: black;
+    color: white;
+}
+
+.navbar-right {
+    margin-right: 0;
+}
+
+.navbar-inverse .navbar-nav>li>a {
+    color: white;
+}
+
+nav .navbar-nav li a {
+    color: white;
+}
+
+.example-spacer {
+    flex: 1 1 auto;
+}
+
+.top-toolbar {
+    position: sticky;
+    position: -webkit-sticky; /* For macOS/iOS Safari */
+    top: 0; /* Sets the sticky toolbar to be on top */
+    z-index: 1000; /* Ensure that your app's content doesn't overlap the toolbar */
+}
+
+.bottom-toolbar {
+    position: sticky;
+    position: -webkit-sticky; /* For macOS/iOS Safari */
+    bottom: 0; /* Sets the sticky toolbar to be on top */
+    z-index: 1000; /* Ensure that your app's content doesn't overlap the toolbar */
+    font-size: 10px;
+}
+
+.box {
+    width: 95%;
+    margin-left: 2.5%;
+    margin-bottom: 10px;
+}
+
+.example-form {
+    min-width: 50%;
+    max-width: 100%;
+    width: 100%;
+  }
+  
+  .example-full-width {
+    width: 100%;
+  }

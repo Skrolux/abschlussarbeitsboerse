@@ -1,0 +1,121 @@
+<div class="box">
+    <div fxLayout="column">
+        <mat-card #content class="content-card">
+            <mat-card-title class="content-card-title">
+                {{ entry.title }}
+                <div fxFlex></div>
+                <div fxLayout="column" fxLayoutGap="20px" style="background-color: grey; padding: 10px; padding-top: 20px; border-radius: 5px;">
+                    <span style="font-size: 20px; font-weight: lighter; text-align: center;">{{ entry.type }}</span>
+                    <button mat-button color="link" [routerLink]="['/home']">Zurück zur Startseite</button>
+                </div>
+            </mat-card-title>
+            <mat-card-content class="content-card-box">
+                <div>
+                    <div fxFlex="80%">
+                        <div class="content-card-header2">Fakultät</div>
+                        <div class="content-card-content">{{ entry.faculty }}</div>
+                        <div class="content-card-header2">Institut</div>
+                        <div class="content-card-content">{{ entry.institute }}</div>
+                        <div class="content-card-header2">Fachgebiet</div>
+                        <div class="content-card-content">{{ entry.specialField }}</div>
+                        <div class="content-card-header2">Beschreibung</div>
+                        <div class="content-card-content">{{ entry.description }}</div>
+                    </div>
+                    <div fxFlex="20%">
+                        <mat-card *ngIf="entry.tags" #tags class="tag-card">
+                            <mat-card-title>Tags</mat-card-title>
+                            <mat-card-content>
+                                <div class="side-card-content">
+                                    <ng-container *ngFor="let tag of entry.tags">#{{ tag }} </ng-container>
+                                </div>
+                            </mat-card-content>
+                        </mat-card>
+                        <mat-card *ngIf="entry.payment || entry.employment" #conditions class="conditions-card">
+                            <mat-card-title>Bedingungen</mat-card-title>
+                            <mat-card-content>
+                                <div class="side-card-content">
+                                    <ng-container *ngIf="entry.payment">
+                                        <mat-icon>attach_money</mat-icon>
+                                        <span style="margin-right: 15px; margin-left: 5px">Bezahlung</span>
+                                    </ng-container>
+                                    <span></span>
+                                    <ng-container *ngIf="entry.employment">
+                                        <mat-icon>work</mat-icon>
+                                        <span style="margin-left: 10px;">Anstellung</span>
+                                    </ng-container>
+                                </div>
+                            </mat-card-content>
+                        </mat-card>
+                        <mat-card #availability class="availability-card">
+                            <mat-card-title>Verfügbarkeit</mat-card-title>
+                            <mat-card-content>
+                                Verfügbar ab {{ entry.availableAsOfDate | date: 'dd.MM.yyyy' }}
+                            </mat-card-content>
+                        </mat-card>
+                        <mat-card *ngIf="entry.industryPartner" #industryPartners class="industryPartner-card">
+                            <mat-card-title>
+                                <ng-container *ngIf="entry.industryPartner.website.startsWith('http://') || entry.industryPartner.website.startsWith('https://'); else elseWebsite">
+                                    <a href="{{entry.industryPartner.website}}" style="color: white;">{{ entry.industryPartner.name}}</a>
+                                </ng-container>
+                                <ng-template #elseWebsite>
+                                    <a href="http://{{entry.industryPartner.website}}" style="color: white;">{{ entry.industryPartner.name}}</a>
+                                </ng-template>
+                            </mat-card-title>
+                            <mat-card-content>
+                                {{ entry.industryPartner.text }}
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+                </div>
+            </mat-card-content>
+            <mat-card-footer class="content-card-footer">
+                <div>
+                    <div fxFlex="50%">
+                        <p style="margin-bottom: 0;">Passend für:</p>
+                        <ng-container *ngFor="let study of entryStudies; last as isLast">
+                            <span *ngIf="!isLast">{{ study }}, </span>
+                            <span *ngIf="isLast">{{ study }}</span>
+                        </ng-container>
+                    </div>
+                    <div fxFlex="50%">
+                        <p style="text-align: right; margin-bottom: 0;">Erstellt am: {{ entry.publishedDate | date: 'dd.MM.yyyy' }}</p>
+                        <p style="text-align: right; margin-bottom: 0;">Zuletzt editiert am: {{ entry.lastEditedDate | date: 'dd.MM.yyyy '}}</p>
+                    </div>
+                </div>
+            </mat-card-footer>
+        </mat-card>
+
+        <mat-card #contacts class="side-card">
+            <mat-card-title class="side-card-title">Kontakte</mat-card-title>
+            <mat-card-content>
+                <ng-container *ngFor="let contact of entryContacts">
+                    <mat-card fxFlex="20%" class="contact-card">
+                        <mat-card-title>{{ contact.name+' '+contact.surname }}</mat-card-title>
+                        <mat-card-content>
+                            <div *ngIf="contact.email">
+                                <div class="side-card-content" fxFlex="50%">E-Mail:</div>
+                                <div class="side-card-content" fxFlex="50%" style="text-align: right;">{{ contact.email }}</div>
+                            </div>
+                            <div *ngIf="contact.phone">
+                                <div class="side-card-content" fxFlex="50%">Telefon</div>
+                                <div class="side-card-content" fxFlex="50%" style="text-align: right;">{{ contact.phone }}</div>
+                            </div>
+                            <div *ngIf="contact.mobile">
+                                <div class="side-card-content" fxFlex="50%">Mobil</div>
+                                <div class="side-card-content" fxFlex="50%" style="text-align: right;">{{ contact.mobile }}</div>
+                            </div>
+                        </mat-card-content>
+                        <mat-card-actions align="end">
+                            <button *ngIf="contact.email" mat-icon-button [cdkCopyToClipboard]="contact.email" (click)="openSnackBar('Email in Zwischenablage kopiert!', 'OK')">
+                                <mat-icon>email</mat-icon>
+                            </button>
+                            <button *ngIf="contact.phone" mat-icon-button [cdkCopyToClipboard]="contact.phone" (click)="openSnackBar('Telefonnummer in Zwischenablage kopiert!', 'OK')">
+                                <mat-icon>phone</mat-icon>
+                            </button>
+                        </mat-card-actions>
+                    </mat-card>
+                </ng-container>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>

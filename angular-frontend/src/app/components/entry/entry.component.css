@@ -1,0 +1,101 @@
+/* Page margin around content */
+.box {
+    margin: 2.5%;
+}
+
+/* Margins between cards */
+.content-card {
+    margin-bottom: 10px;
+}
+
+.side-card {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+/* Content Card */
+.content-card-title {
+    font-size: 40px;
+    font-weight: bold;
+    margin-right: 20px;
+}
+
+.content-card > :first-child {
+    margin-top: 30px;
+    margin-bottom: 50px;
+    margin-left: 10px;
+}
+
+.content-card-box {
+    margin-left: 10px;
+}
+
+.content-card-header2 {
+    font-size: 25px;
+    margin-bottom: 15px;
+}
+
+.content-card-content {
+    font-size: 15px;
+    margin-bottom: 20px;
+    margin-right: 20px;
+}
+
+.content-card-footer {
+    margin-top: 100px;
+    margin-left: 10px;
+    margin-bottom: 20px;
+    margin-right: 10px
+}
+
+/* Side cards */
+
+.side-card-title {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.side-card-header {
+    font-size: 15px;
+    margin-bottom: 0px;
+    font-weight: bold;
+}
+
+.side-card > :first-child {
+    margin-top: 5px;
+    margin-bottom: 15px;
+    margin-left: 0px;
+}
+
+.side-card-content {
+    font-size: 15px;
+}
+
+.contact-card {
+    background-color: grey;
+    margin-right: 5px;
+}
+
+.tag-card {
+    background-color: grey;
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+
+.conditions-card {
+    background-color: grey;
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+
+.availability-card {
+    background-color: grey;
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+
+.industryPartner-card {
+    background-color: grey;
+    margin-right: 10px;
+    margin-bottom: 10px;
+}

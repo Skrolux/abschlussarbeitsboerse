@@ -1,0 +1,52 @@
+<mat-toolbar color="black" class="top-toolbar">
+  <button mat-button [routerLink]="['/home']" routerLinkActive="active">Startseite</button>
+  <button mat-button [routerLink]="['/entries']" [queryParams]="{ type: 'bac' }" routerLinkActive="active">Bachelorarbeiten</button>
+  <button mat-button [routerLink]="['/entries']" [queryParams]="{ type: 'mas' }" routerLinkActive="active">Masterarbeiten</button>
+  <button mat-button [routerLink]="['/entries']" [queryParams]="{ type: 'dip' }" routerLinkActive="active">Diplomarbeiten</button>
+  <button mat-button [routerLink]="['/entries']" [queryParams]="{ type: 'dis' }" routerLinkActive="active">Dissertationen</button>
+  <span class="example-spacer"></span>
+  <button mat-icon-button class="example-icon" [matMenuTriggerFor]="menu">
+    <mat-menu #menu="matMenu">
+      <button *ngIf="isAuthenticated && !isStudent" mat-menu-item [routerLink]="['/portal']" routerLinkActive="active">
+        <mat-icon>cloud</mat-icon>
+        <span>Portal</span>
+      </button>
+      <button mat-menu-item [routerLink]="['/login']" routerLinkActive="active" *ngIf="!isAuthenticated">
+        <mat-icon>login</mat-icon>
+        <span>Login</span>
+      </button>
+      <button mat-menu-item *ngIf="isAuthenticated" (click)="logOut()">
+        <mat-icon>logout</mat-icon>
+        <span>Logout</span>
+      </button>
+    </mat-menu>
+    <mat-icon>menu</mat-icon>
+  </button>
+</mat-toolbar>
+
+<router-outlet></router-outlet>
+
+<div class="box" *ngIf="!feedbackSubmitted">
+  <mat-card>
+    <mat-card-title> Feedback </mat-card-title>
+    <mat-card-subtitle>Bitte tragen Sie im nachfolgenden Feld Ihr Feedback zur aktuellen Seite ein. Die Daten werden anonym gesammelt.</mat-card-subtitle>
+    <mat-card-content>
+      <form class="example-form">
+        <mat-form-field class="example-full-width">
+          <textarea style="background-color: grey; padding: 10px;" matInput name="feedback" [(ngModel)]="message"></textarea>
+        </mat-form-field>
+      </form>
+      <button style="text-align: center" mat-icon-button (click)="sendFeedback()">
+        <mat-icon>email</mat-icon> Feedback senden
+      </button>
+    </mat-card-content>
+  </mat-card>
+</div>
+
+<div class="box" *ngIf="feedbackSubmitted">
+  <mat-card style="text-align: center">
+    <mat-card-title>
+        Vielen Dank für Ihr Feedback!
+    </mat-card-title>
+  </mat-card>
+</div>

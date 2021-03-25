@@ -1,0 +1,199 @@
+<div class="box" fxLayout="row" fxLayoutAlign="space-between start" *ngIf="!submitted">
+    <ng-container >
+        <mat-vertical-stepper class="stepper" linear #stepper fxFlex="100%" >
+            <mat-step [stepControl]="entryDetailsFormGroup">
+                <form #entryDetailsFormGroup="ngForm"> 
+                    <ng-template matStepLabel>Abschlussarbeit Details</ng-template>
+                    <div>
+                        <p style="color: white">Bitte tragen Sie alle vorhandenen Informationen zur Abschlussarbeit ein!</p>
+                    </div>
+                    <p fxLayout="row" fxLayoutGap="1%">
+                        <mat-form-field appearance="fill">
+                            <mat-label>Typ</mat-label>
+                            <mat-select name="type" [(ngModel)]="currEntry.type" required>
+                                <mat-option>-</mat-option>
+                                <mat-option *ngFor="let type of types" [value]="type">
+                                    {{ type }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field appearance="fill">
+                            <mat-label>Fakultät</mat-label>
+                            <mat-select name="faculty" [(ngModel)]="currEntry.faculty">
+                                <mat-option>-</mat-option>
+                                <mat-option *ngFor="let faculty of faculties" [value]="faculty">
+                                    {{ faculty }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field appearance="fill">
+                            <mat-label>Institut</mat-label>
+                            <mat-select name="institute" [(ngModel)]="currEntry.institute" required>
+                                <mat-option>-</mat-option>
+                                <mat-option *ngFor="let institute of institutes" [value]="institute">
+                                    {{ institute }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field appearance="fill">
+                            <mat-label>Sprache</mat-label>
+                            <mat-select name="languages" [(ngModel)]="currEntry.languages" required>
+                                <mat-option>-</mat-option>
+                                <mat-option *ngFor="let language of languages" [value]="language">
+                                    {{ language }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field appearance="fill">
+                            <mat-label>Studien</mat-label>
+                            <mat-select 
+                                name="study" 
+                                [formControl]="suitableStudies" 
+                                (selectionChange)="suitableStudiesSelected($event)" 
+                                multiple>
+                                <mat-option>-</mat-option>
+                                <mat-option *ngFor="let study of studies" [value]="study">
+                                    {{ study }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field appearance="fill" class="white-text">
+                            <mat-label>Verfügbar ab</mat-label>
+                            <input matInput name="availableAsOfDate" [matDatepicker]="picker" [formControl]="asOfDate" (dateChange)="asOfDateChange($event)">
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                          </mat-form-field>
+                    </p>
+                    <p>
+                        <mat-form-field class="full-width" appearance="fill">
+                            <mat-label>Titel</mat-label>
+                            <input matInput name="title" [(ngModel)]="currEntry.title" required>
+                        </mat-form-field>
+                    </p>
+                    <p>
+                        <mat-form-field class="full-width" appearance="fill">
+                            <mat-label>Beschreibung</mat-label>
+                            <textarea matInput name="description" [(ngModel)]="currEntry.description" required></textarea>
+                        </mat-form-field>
+                    </p>
+                    <p>
+                        <mat-form-field class="full-width" appearance="fill">
+                            <mat-label>Fachgebiet</mat-label>
+                            <input name="specialField" [(ngModel)]="currEntry.specialField" matInput>
+                        </mat-form-field>
+                    </p>
+                    <p>
+                        <mat-form-field class="full-width" appearance="fill">
+                            <mat-label>Tags</mat-label>
+                            <mat-chip-list #tagsArray>
+                              <mat-chip 
+                                *ngFor="let tag of this.currEntry.tags" 
+                                [selectable]="selectable"
+                                [removable]="removable" 
+                                (removed)="remove(tag)">
+                                    {{ tag }}
+                                <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                              </mat-chip>
+                              <input placeholder="New tag..."
+                                     [matChipInputFor]="tagsArray"
+                                     [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                                     [matChipInputAddOnBlur]="addOnBlur"
+                                     (matChipInputTokenEnd)="addTag($event)">
+                            </mat-chip-list>
+                          </mat-form-field>
+                    </p>
+                    <p fxLayout="row" fxLayoutGap="1%">
+                        <mat-checkbox name="visible" [(ngModel)]="currEntry.visible">
+                            Sichtbarkeit
+                        </mat-checkbox>
+                        <mat-checkbox name="assigned" [(ngModel)]="currEntry.assigned">
+                            Bereits vergeben?
+                        </mat-checkbox>
+                    </p>
+                    <p fxLayout="row" fxLayoutGap="1%">
+                        <button mat-button matStepperNext>Weiter</button>
+                        <button mat-button color="warn" (click)="cancel()" [routerLink]="['/portal']">Abbrechen</button>
+                    </p>
+                </form>
+            </mat-step>
+            <mat-step>
+                <ng-template matStepLabel>Kontakt</ng-template>
+                <div>
+                    <p style="color: white">Bitte wählen Sie mindestens eine Ansprechperson aus!</p>
+                </div>
+                <mat-form-field appearance="fill">
+                    <mat-label>Kontakte</mat-label>
+                    
+                    <mat-select 
+                        name="contacts" 
+                        [formControl]="contacts" 
+                        (selectionChange)= "changedContacts()" 
+                        multiple 
+                        required
+                    >
+                        <mat-option *ngFor="let emp of emps" [value]="emp">
+                            {{ emp.name + " " + emp.surname + " - " + emp.group + emp.matnr }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <p fxLayout="row" fxLayoutGap="1%">
+                    <button mat-button matStepperNext>Weiter</button>
+                    <button mat-button matStepperPrevious>Zurück</button>
+                    <button mat-button color="warn" (click)="cancel()" [routerLink]="['/portal']">Abbrechen</button>
+                </p>
+            </mat-step>
+            <mat-step>
+                <ng-template matStepLabel>Industriepartner</ng-template>
+                <div>
+                    <p style="color: white">Bitte tragen Sie alle Informationen zum Industriepartner ein, falls vorhanden!</p>
+                </div>
+                <p fxLayout="row" fxLayoutGap="1%">
+                    <mat-form-field class="full-width" appearance="fill">
+                        <mat-label>Name Industriepartner</mat-label>
+                        <input name="industryPartnerName" [ngModel]="this.currEntry.industryPartner?.name" (ngModelChange)="indPartName($event)" matInput>
+                    </mat-form-field>
+                    <mat-form-field class="full-width" appearance="fill">
+                        <mat-label>Website Industriepartner</mat-label>
+                        <input name="industryPartnerWebsite" [ngModel]="this.currEntry.industryPartner?.website" (ngModelChange)="indPartWeb($event)" matInput>
+                    </mat-form-field>
+                </p>
+                <p>
+                    <mat-form-field class="full-width" appearance="fill">
+                        <mat-label>Beschreibung Industriepartner</mat-label>
+                        <textarea name="industryPartnerText" [ngModel]="this.currEntry.industryPartner?.text" (ngModelChange)="indPartText($event)" matInput></textarea>
+                    </mat-form-field>
+                </p>
+                <p>
+                    <mat-checkbox name="payment" [(ngModel)]="currEntry.payment">
+                        Bezahlung
+                    </mat-checkbox>
+                    <mat-checkbox name="employment" [(ngModel)]="currEntry.employment">
+                        Anstellung
+                    </mat-checkbox>
+                </p>
+                <p fxLayout="row" fxLayoutGap="1%">
+                    <button mat-button color="primary" (click)="saveEntry()">Eintrag speichern</button>
+                    <button mat-button matStepperPrevious>Zurück</button>
+                    <button mat-button color="warn" (click)="cancel()" [routerLink]="['/portal']">Abbrechen</button>
+                </p>
+            </mat-step>
+        </mat-vertical-stepper>
+    </ng-container>
+</div>
+<div class="box" *ngIf="submitted">
+    <mat-card style="text-align: center">
+        <mat-card-title>
+            Transaktion durchgeführt!
+        </mat-card-title>
+        <mat-card-content>
+            <p>Sie haben Ihre Änderungen erfolgreiche gespeichert.</p>
+            <button 
+                mat-button 
+                color="primary" 
+                (click)="cancel()" 
+                [routerLink]="['/portal']">
+                Zurück zum Portal
+            </button>
+        </mat-card-content>
+    </mat-card>
+</div>

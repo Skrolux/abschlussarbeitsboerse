@@ -1,0 +1,22 @@
+version: '3'
+services:
+  node:
+    container_name: node
+    restart: always
+    build: ./node-backend
+    ports:
+      - '5200:5200'
+    links:
+      - mongo
+  mongo:
+    container_name: mongo
+    image: mongo
+    ports:
+      - '27017:27017'
+  angular:
+    container_name: angular
+    build: ./angular-frontend
+    ports:
+      - '4200:4200'
+    links:
+      - mongo

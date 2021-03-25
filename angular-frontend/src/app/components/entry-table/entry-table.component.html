@@ -1,0 +1,130 @@
+<h1>{{ dataSource.title }}</h1>
+
+<div class="box" fxLayout="column">
+  <div class="input-group">
+      <input #searchInput type="text" class="form-control" placeholder="Abschlussarbeit suchen..." (keyup)="applySearchTerm($event.target.value)">
+    <div class="input-group-btn">
+      <button type="button" class="btn btn-dark btn-right" [class.opened]="expand" (click)="expand = !expand; searchInput.disabled=!searchInput.disabled" [attr.aria-expanded]="!isCollapsed" aria-controls="collapseFilter">Suchoptionen</button>
+    </div>
+  </div>
+
+  <div #collapse fxHide [fxShow]="expand">
+    <mat-form-field fxFlex="10%">
+      <mat-label>Typ</mat-label>
+      <mat-select [formControl]="selectedType" (selectionChange)="filterType($event)" [(ngModel)]="typeInitial">
+        <mat-option>-</mat-option>
+        <mat-option *ngFor="let type of types" [value]="type">
+          {{ type }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field class="matFormWithSpace" fxFlex="10%">
+      <mat-label>Fakultät</mat-label>
+      <mat-select [formControl]="selectedFaculty" (selectionChange)="filterFaculty($event)" [(ngModel)]="facultyInitial">
+        <mat-option>-</mat-option>
+        <mat-option *ngFor="let faculty of faculties" [value]="faculty">
+          {{ faculty }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field class="matFormWithSpace" fxFlex="30%">
+      <mat-label>Institut</mat-label>
+      <mat-select [formControl]="selectedInstitutes" (selectionChange)="filterInstitute($event)" [(ngModel)]="instituteInitial">
+        <input matInput class="mat-option mat-option-input" placeholder="Suche..." (keyup)="onKeyInstitute($event.target.value)">
+        <mat-option>-</mat-option>
+        <mat-option *ngFor="let institute of filteredInstitutes" [value]="institute">
+          {{ institute }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field class="matFormWithSpace" fxFlex="10%">
+      <mat-label>Sprache</mat-label>
+      <mat-select [formControl]="selectedLanguages" (selectionChange)="filterLanguage($event)" [(ngModel)]="languageInitial">
+        <mat-option>-</mat-option>
+        <mat-option value="Deutsch">Deutsch</mat-option>
+        <mat-option value="Englisch">Englisch</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field class="matFormWithSpace" fxFlex="30%">
+      <mat-label>Studiengang</mat-label>
+      <mat-select [formControl]="selectedStudies" (selectionChange)="filterCourse($event)" [(ngModel)]="courseInitial">
+        <input matInput class="mat-option mat-option-input" placeholder="Suche..." (keyup)="onKeyStudy($event.target.value)">
+        <mat-option>-</mat-option>
+        <mat-option *ngFor="let study of filteredStudies" [value]="study">
+          {{ study }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-card fxFlex="12%" class="matFormWithSpace" fxLayout-align="left">
+      <mat-card-content>
+        <mat-checkbox [(ngModel)]="payment" (change)="filterPayment($event)">Bezahlung</mat-checkbox>
+        <mat-checkbox [(ngModel)]="employment" (change)="filterEmployment($event)">Anstellung</mat-checkbox>
+        <mat-checkbox [(ngModel)]="industryPartner" (change)="filterIndustryPartner($event)">Industriepartner</mat-checkbox>
+      </mat-card-content>
+    </mat-card>
+    <div class="reset-button" fxFlex="5%">
+      <button type="button" class="btn btn-dark" style="border-radius: 4px;" (click)="reset()">Reset</button>
+    </div>
+  </div>
+</div>
+
+<div class="mat-elevation-z8 data-table">
+    <table mat-table #table [dataSource]="dataSource.filteredEntries" class="full-width-table" aria-label="Elements">
+      
+      <!-- Title Column -->
+      <ng-container matColumnDef="title">
+        <th mat-header-cell *matHeaderCellDef>Titel</th>
+        <td mat-cell *matCellDef="let row">
+          <a [routerLink]="['/entry']" [queryParams]="row" routerLinkActive="active" style="color:white">{{ row.title }}</a>
+          <span *ngIf="row.payment || row.employment" style="color:lightgrey"> $</span>
+          <span *ngIf="!row.payment && !row.employment" style="color:lightgrey"> </span>
+        </td>
+      </ng-container>
+
+      <!-- Type Column -->
+      <ng-container matColumnDef="type">
+        <th mat-header-cell *matHeaderCellDef>Typ</th>
+        <td mat-cell *matCellDef="let row">{{row.type}}</td>
+      </ng-container>
+
+      <!-- Institute Column -->
+      <ng-container matColumnDef="institute">
+        <th mat-header-cell *matHeaderCellDef>Institut</th>
+        <td mat-cell *matCellDef="let row">{{row.institute}}</td>
+      </ng-container>
+
+      <!-- Contact Column -->
+      <ng-container matColumnDef="author">
+        <th mat-header-cell *matHeaderCellDef>Kontakt</th>
+        <td mat-cell *matCellDef="let row">
+          <ng-container *ngFor="let user of dataSource.users">
+            <ng-container *ngIf="user.group+user.matnr==row.contact1; else elseBlock2">
+                <ng-container *ngIf="user.website else elseBlock">
+                    <a style="color:white" href="{{user.website}}">{{ user.name+' '+user.surname }}</a>
+                </ng-container>
+                <ng-template #elseBlock>{{ user.name+' '+user.surname}}</ng-template>
+            </ng-container>
+            <ng-container #elseBlock2 *ngIf="(user.group+user.matnr==row.author && user.group+user.matnr!=row.contact1)">
+                <ng-container *ngIf="user.website else elseBlock3">
+                    <a style="color:white" href="{{user.website}}">{{ user.name+' '+user.surname }}</a>
+                </ng-container>
+                <ng-template #elseBlock3>{{ user.name+' '+user.surname}}</ng-template>
+            </ng-container>
+          </ng-container>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell" colspan="4">Keine passenden Abschlussarbeiten verfügbar</td>
+      </tr>
+    </table>
+
+    <!--<mat-paginator
+      [length]="100"
+      [pageSize]="25"
+      [pageSizeOptions]="[10, 25, 100, 250]">
+    </mat-paginator>-->
+</div>

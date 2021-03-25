@@ -1,0 +1,13 @@
+<h1 mat-dialog-title>Achtung</h1>
+<div mat-dialog-content>
+  <p>
+    Möchten Sie den Eintrag "{{ data.title }}" mit der ID {{ data.id }} wirklich löschen?
+    <br>
+    <br>
+    Diese Aktion kann nicht rückgängig gemacht werden.
+  </p>
+</div>
+<div mat-dialog-actions>
+  <button mat-button [mat-dialog-close]="false" cdkFocusInitial style="background-color: grey;">Nein</button>
+  <button mat-button [mat-dialog-close]="true" style="background-color: red;">Ja</button>
+</div>

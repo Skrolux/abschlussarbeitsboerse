@@ -1,0 +1,27 @@
+{
+  "name": "database_service",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "start": "nodemon server.js",
+    "dev": "nodemon server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "2.4.3",
+    "body-parser": "1.19.0",
+    "config": "3.3.2",
+    "cors": "*",
+    "express": "4.17.1",
+    "express-validator": "6.6.1",
+    "follow-redirects": "^1.13.3",
+    "jsonwebtoken": "8.5.1",
+    "mongoose": "5.10.7",
+    "nodemon": "^2.0.7",
+    "request": "^2.88.2",
+    "swagger-jsdoc": "4.2.0",
+    "swagger-ui-express": "^4.1.4"
+  }
+}

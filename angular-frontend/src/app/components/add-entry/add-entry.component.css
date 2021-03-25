@@ -1,0 +1,75 @@
+h1 {
+    margin-top: 10px;
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+h2 {
+    margin-top: 10px;
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.box {
+    margin: 2.5%;
+}
+
+.input-group-text {
+    width: 200px;
+}
+
+input:required {
+    box-shadow: none;
+}
+
+.btn {
+    margin-top: 10px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+
+.mat-button {
+    background-color: lightgrey;
+}
+
+.stepper {
+    border-radius: 4px;
+}
+
+.mat-card > :first-child {
+    margin-bottom: 20px;
+}
+
+.mat-card-action-button {
+    margin-bottom: 0px !important;
+    margin-right: 0px;
+    color: black
+}
+
+.full-width {
+    width: 100%;
+    color: white;
+}
+
+.white-text {
+    color: white;
+}
+
+:host .mat-checkbox {
+    color: white;
+    font-size: normal;
+    font-weight: lighter !important;
+    padding-left: 10px;
+    vertical-align: botom;
+}
+
+mat-card {
+    max-width: 400px;
+    margin: 2em auto;
+    text-align: center;
+}
+
+.main-div{
+    margin: auto;
+    margin-top: 10%;
+}
