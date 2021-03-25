@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 
-const DB_URI = "mongodb://localhost:27017/main_database";
+// bei direkten Verbidungen zwischen Docker-Containern immer Containername als Hostname verwenden
+const DB_URI = "mongodb://mongo:27017/main_database";
 
 const connectDB = async () => {
   try {

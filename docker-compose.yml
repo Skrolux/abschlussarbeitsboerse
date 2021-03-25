@@ -6,13 +6,15 @@ services:
     build: ./node-backend
     ports:
       - '5200:5200'
+    #  Hier stelltst du schon eine Vebrindung zwischen den beiden Containern her ;)
     links:
       - mongo
   mongo:
     container_name: mongo
     image: mongo
-    ports:
-      - '27017:27017'
+    # den Port musst du und solltest du nicht exposen
+    #ports:
+    #  - '27017:27017'
   angular:
     container_name: angular
     build: ./angular-frontend
