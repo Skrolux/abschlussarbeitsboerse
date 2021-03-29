@@ -2,11 +2,10 @@
     <div fxLayout="column">
         <mat-card #content class="content-card">
             <mat-card-title class="content-card-title">
-                {{ entry.title }}
+                <mat-card-title>{{ entry.title }}</mat-card-title>
                 <div fxFlex></div>
-                <div fxLayout="column" fxLayoutGap="20px" style="background-color: grey; padding: 10px; padding-top: 20px; border-radius: 5px;">
-                    <span style="font-size: 20px; font-weight: lighter; text-align: center;">{{ entry.type }}</span>
-                    <button mat-button color="link" [routerLink]="['/home']">Zurück zur Startseite</button>
+                <div style="text-align: right;">
+                    <button mat-button style="background-color: grey" [routerLink]="['/home']">Zurück zur Startseite</button>
                 </div>
             </mat-card-title>
             <mat-card-content class="content-card-box">
@@ -22,6 +21,11 @@
                         <div class="content-card-content">{{ entry.description }}</div>
                     </div>
                     <div fxFlex="20%">
+                        <mat-card class="type-card">
+                            <mat-card-content>
+                                <div style="font-size: 20px;  text-align: left;">{{ entry.type }}</div>
+                            </mat-card-content>
+                        </mat-card>
                         <mat-card *ngIf="entry.tags" #tags class="tag-card">
                             <mat-card-title>Tags</mat-card-title>
                             <mat-card-content>
@@ -92,17 +96,17 @@
                     <mat-card fxFlex="20%" class="contact-card">
                         <mat-card-title>{{ contact.name+' '+contact.surname }}</mat-card-title>
                         <mat-card-content>
-                            <div *ngIf="contact.email">
-                                <div class="side-card-content" fxFlex="50%">E-Mail:</div>
-                                <div class="side-card-content" fxFlex="50%" style="text-align: right;">{{ contact.email }}</div>
+                            <div *ngIf="contact.email" fxLayout="row">
+                                <div class="side-card-content" fxFlex="10%">E-Mail:</div>
+                                <div class="side-card-content" fxFlex="90%" style="text-align: right;">{{ contact.email }}</div>
                             </div>
-                            <div *ngIf="contact.phone">
-                                <div class="side-card-content" fxFlex="50%">Telefon</div>
-                                <div class="side-card-content" fxFlex="50%" style="text-align: right;">{{ contact.phone }}</div>
+                            <div *ngIf="contact.phone" fxLayout="row">
+                                <div class="side-card-content" fxFlex="10%">Telefon:</div>
+                                <div class="side-card-content" fxFlex="90%" style="text-align: right;">{{ contact.phone }}</div>
                             </div>
-                            <div *ngIf="contact.mobile">
-                                <div class="side-card-content" fxFlex="50%">Mobil</div>
-                                <div class="side-card-content" fxFlex="50%" style="text-align: right;">{{ contact.mobile }}</div>
+                            <div *ngIf="contact.mobile" fxLayout="row">
+                                <div class="side-card-content" fxFlex="10%">Mobil</div>
+                                <div class="side-card-content" fxFlex="90%" style="text-align: right;">{{ contact.mobile }}</div>
                             </div>
                         </mat-card-content>
                         <mat-card-actions align="end">

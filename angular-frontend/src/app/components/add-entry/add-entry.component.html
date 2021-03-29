@@ -1,9 +1,9 @@
 <div class="box" fxLayout="row" fxLayoutAlign="space-between start" *ngIf="!submitted">
-    <ng-container >
-        <mat-vertical-stepper class="stepper" linear #stepper fxFlex="100%" >
+    <ng-container>
+        <mat-vertical-stepper class="stepper" linear #stepper fxFlex="100%">
             <mat-step [stepControl]="entryDetailsFormGroup">
-                <form #entryDetailsFormGroup="ngForm"> 
-                    <ng-template matStepLabel>Abschlussarbeit Details</ng-template>
+                <form #entryDetailsFormGroup="ngForm">
+                    <ng-template matStepLabel>Allgemeine Informationen</ng-template>
                     <div>
                         <p style="color: white">Bitte tragen Sie alle vorhandenen Informationen zur Abschlussarbeit ein!</p>
                     </div>
@@ -46,11 +46,7 @@
                         </mat-form-field>
                         <mat-form-field appearance="fill">
                             <mat-label>Studien</mat-label>
-                            <mat-select 
-                                name="study" 
-                                [formControl]="suitableStudies" 
-                                (selectionChange)="suitableStudiesSelected($event)" 
-                                multiple>
+                            <mat-select name="study" [formControl]="suitableStudies" (selectionChange)="suitableStudiesSelected($event)" multiple>
                                 <mat-option>-</mat-option>
                                 <mat-option *ngFor="let study of studies" [value]="study">
                                     {{ study }}
@@ -62,7 +58,7 @@
                             <input matInput name="availableAsOfDate" [matDatepicker]="picker" [formControl]="asOfDate" (dateChange)="asOfDateChange($event)">
                             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                             <mat-datepicker #picker></mat-datepicker>
-                          </mat-form-field>
+                        </mat-form-field>
                     </p>
                     <p>
                         <mat-form-field class="full-width" appearance="fill">
@@ -86,33 +82,29 @@
                         <mat-form-field class="full-width" appearance="fill">
                             <mat-label>Tags</mat-label>
                             <mat-chip-list #tagsArray>
-                              <mat-chip 
-                                *ngFor="let tag of this.currEntry.tags" 
-                                [selectable]="selectable"
-                                [removable]="removable" 
-                                (removed)="remove(tag)">
+                                <mat-chip *ngFor="let tag of this.currEntry.tags" [selectable]="selectable" [removable]="removable" (removed)="remove(tag)">
                                     {{ tag }}
-                                <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
-                              </mat-chip>
-                              <input placeholder="New tag..."
-                                     [matChipInputFor]="tagsArray"
-                                     [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                                     [matChipInputAddOnBlur]="addOnBlur"
-                                     (matChipInputTokenEnd)="addTag($event)">
+                                    <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                                </mat-chip>
+                                <input placeholder="New tag..." [matChipInputFor]="tagsArray" [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="addOnBlur" (matChipInputTokenEnd)="addTag($event)">
                             </mat-chip-list>
-                          </mat-form-field>
+                        </mat-form-field>
                     </p>
                     <p fxLayout="row" fxLayoutGap="1%">
                         <mat-checkbox name="visible" [(ngModel)]="currEntry.visible">
-                            Sichtbarkeit
+                            Sichtbar
                         </mat-checkbox>
                         <mat-checkbox name="assigned" [(ngModel)]="currEntry.assigned">
-                            Bereits vergeben?
+                            Bereits vergeben
                         </mat-checkbox>
-                    </p>
-                    <p fxLayout="row" fxLayoutGap="1%">
-                        <button mat-button matStepperNext>Weiter</button>
-                        <button mat-button color="warn" (click)="cancel()" [routerLink]="['/portal']">Abbrechen</button>
+
+                        <mat-checkbox name="payment" [(ngModel)]="currEntry.payment">
+                            Bezahlung
+                        </mat-checkbox>
+                        <mat-checkbox name="employment" [(ngModel)]="currEntry.employment">
+                            Anstellung
+                        </mat-checkbox>
+
                     </p>
                 </form>
             </mat-step>
@@ -121,26 +113,14 @@
                 <div>
                     <p style="color: white">Bitte wählen Sie mindestens eine Ansprechperson aus!</p>
                 </div>
-                <mat-form-field appearance="fill">
-                    <mat-label>Kontakte</mat-label>
-                    
-                    <mat-select 
-                        name="contacts" 
-                        [formControl]="contacts" 
-                        (selectionChange)= "changedContacts()" 
-                        multiple 
-                        required
-                    >
+                <mat-form-field appearance="fill" style="width: 25%;">
+                    <mat-label>Ansprechpersonen auswählen</mat-label>
+                    <mat-select name="contacts" [formControl]="contacts" (selectionChange)="changedContacts()" multiple required>
                         <mat-option *ngFor="let emp of emps" [value]="emp">
                             {{ emp.name + " " + emp.surname + " - " + emp.group + emp.matnr }}
                         </mat-option>
                     </mat-select>
                 </mat-form-field>
-                <p fxLayout="row" fxLayoutGap="1%">
-                    <button mat-button matStepperNext>Weiter</button>
-                    <button mat-button matStepperPrevious>Zurück</button>
-                    <button mat-button color="warn" (click)="cancel()" [routerLink]="['/portal']">Abbrechen</button>
-                </p>
             </mat-step>
             <mat-step>
                 <ng-template matStepLabel>Industriepartner</ng-template>
@@ -163,17 +143,8 @@
                         <textarea name="industryPartnerText" [ngModel]="this.currEntry.industryPartner?.text" (ngModelChange)="indPartText($event)" matInput></textarea>
                     </mat-form-field>
                 </p>
-                <p>
-                    <mat-checkbox name="payment" [(ngModel)]="currEntry.payment">
-                        Bezahlung
-                    </mat-checkbox>
-                    <mat-checkbox name="employment" [(ngModel)]="currEntry.employment">
-                        Anstellung
-                    </mat-checkbox>
-                </p>
                 <p fxLayout="row" fxLayoutGap="1%">
                     <button mat-button color="primary" (click)="saveEntry()">Eintrag speichern</button>
-                    <button mat-button matStepperPrevious>Zurück</button>
                     <button mat-button color="warn" (click)="cancel()" [routerLink]="['/portal']">Abbrechen</button>
                 </p>
             </mat-step>
@@ -182,16 +153,17 @@
 </div>
 <div class="box" *ngIf="submitted">
     <mat-card style="text-align: center">
-        <mat-card-title>
-            Transaktion durchgeführt!
+        <mat-card-title style="margin-top: 2%">
+            <ng-container *ngIf="this.case == 'new' || this.case == 'newFromTemplate'">
+                Eintrag erstellt
+            </ng-container>
+            <ng-container *ngIf="this.case == 'edit'">
+                Änderung durchgeführt
+            </ng-container>
         </mat-card-title>
         <mat-card-content>
-            <p>Sie haben Ihre Änderungen erfolgreiche gespeichert.</p>
-            <button 
-                mat-button 
-                color="primary" 
-                (click)="cancel()" 
-                [routerLink]="['/portal']">
+            <p>Sie haben Ihre Änderungen erfolgreich gespeichert.</p>
+            <button mat-button color="primary" (click)="cancel()" [routerLink]="['/portal']">
                 Zurück zum Portal
             </button>
         </mat-card-content>

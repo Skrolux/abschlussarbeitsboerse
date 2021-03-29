@@ -98,7 +98,7 @@ export class EntryTableDataSource extends DataSource<Entry> {
     //this.paginator.length = this.filteredEntries.length;
   }
 
-  filterType(type): void {
+  filterType(type) {
     if (!type) {
       this.typeFiltered = false;
       if (!this.facultyFiltered && !this.instituteFiltered && !this.languageFiltered && !this.courseFiltered && !this.paymentFiltered && !this.employmentFiltered && !this.industryPartnerFiltered) this.resetDataSource();
@@ -128,50 +128,56 @@ export class EntryTableDataSource extends DataSource<Entry> {
     }
   }
 
-  filterInstitute(institute) {
-    if (!institute) {
+  filterInstitute(institute: string[]) {
+    if (!institute || institute.length == 0) {
       this.instituteFiltered = false;
       if (!this.typeFiltered && !this.facultyFiltered && !this.languageFiltered && !this.courseFiltered && !this.paymentFiltered && !this.employmentFiltered && !this.industryPartnerFiltered) this.resetDataSource();
     } else {
       if (this.instituteFiltered && !this.typeFiltered && !this.facultyFiltered && !this.languageFiltered && !this.courseFiltered && !this.paymentFiltered && !this.employmentFiltered && !this.industryPartnerFiltered) {
-        this.filteredEntries = this.entries.filter(entry => entry.institute.trim().toLocaleLowerCase().includes(institute.trim().toLocaleLowerCase()));
+        this.filteredEntries = this.entries.filter(entry => institute.some(x => entry.institute.trim().toLocaleLowerCase().includes(x.trim().toLocaleLowerCase())));
         this.instituteFiltered = true;
       } else {
-        this.filteredEntries = this.filteredEntries.filter(entry => entry.institute.trim().toLocaleLowerCase().includes(institute.trim().toLocaleLowerCase()));
+        this.filteredEntries = this.filteredEntries.filter(entry => institute.some(x => entry.institute.trim().toLocaleLowerCase().includes(x.trim().toLocaleLowerCase())));
         this.instituteFiltered = true;
       }
     }
   }
 
-  filterLanguage(language) {
-    if (!language) {
+  filterLanguage(language: string[]) {
+    if (!language || language.length == 0) {
       this.languageFiltered = false;
       if (!this.typeFiltered && !this.facultyFiltered && !this.courseFiltered && !this.instituteFiltered && !this.paymentFiltered && !this.employmentFiltered && !this.industryPartnerFiltered) this.resetDataSource();
     } else {
       if (this.languageFiltered && !this.typeFiltered && !this.instituteFiltered && !this.languageFiltered && !this.courseFiltered && !this.paymentFiltered && !this.employmentFiltered && !this.industryPartnerFiltered) {
-        this.filteredEntries = this.entries.filter(entry => entry.languages.includes(language));
+        this.filteredEntries = this.entries.filter(entry => language.some(x => entry.languages.trim().toLocaleLowerCase().includes(x.trim().toLocaleLowerCase())));
         this.languageFiltered = true;
       } else {
-        this.filteredEntries = this.filteredEntries.filter(entry => entry.languages.includes(language));
+        this.filteredEntries = this.filteredEntries.filter(entry => language.some(x => entry.languages.trim().toLocaleLowerCase().includes(x.trim().toLocaleLowerCase())));
         this.languageFiltered = true;
       }
     }
   }
 
-  filterCourse(course) {
-    if (!course) {
+  filterCourse(course: string[]) {
+    let stds: string[] = new Array();
+    if (!course || course.length == 0) {
       this.courseFiltered = false;
-      if (!this.typeFiltered && !this.facultyFiltered && !this.languageFiltered && !this.instituteFiltered && !this.paymentFiltered && !this.employmentFiltered && !this.industryPartnerFiltered) this.resetDataSource();
+      if (!this.typeFiltered && !this.facultyFiltered && !this.languageFiltered && !this.instituteFiltered && !this.paymentFiltered && !this.employmentFiltered && !this.industryPartnerFiltered) {
+        this.resetDataSource();
+      }
     } else {
-      const study = studies.find(s => (s.Studium+' '+s.Studienart) == course).Studienkennzahl;
+      course.forEach(x => stds.push(studies.find(s => (s.Studium+' '+s.Studienart) == x).Studienkennzahl));
       if (this.courseFiltered && !this.typeFiltered && !this.instituteFiltered && !this.languageFiltered && !this.facultyFiltered && !this.paymentFiltered && !this.employmentFiltered && !this.industryPartnerFiltered) {
-        this.filteredEntries = this.entries.filter(entry => entry.suitableStudies != null && entry.suitableStudies.includes(study));
+        this.filteredEntries = this.entries.filter(entry => entry.suitableStudies != null && entry.suitableStudies.some(s => stds.includes(s)));
         this.courseFiltered = true;
+        console.log('test');
       } else {
-        this.filteredEntries = this.filteredEntries.filter(entry => entry.suitableStudies != null && entry.suitableStudies.includes(study));
+        this.filteredEntries = this.filteredEntries.filter(entry => entry.suitableStudies != null && entry.suitableStudies.some(s => stds.includes(s)));
         this.courseFiltered = true;
+        console.log('test2');
       }
     }
+    stds = [];
   }
 
   filterPayment(payment) {

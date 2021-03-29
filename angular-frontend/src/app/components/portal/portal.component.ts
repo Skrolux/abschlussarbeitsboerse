@@ -7,7 +7,7 @@ import { EntryDataService } from '../../services/entry-data.service';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 
-import {MatButtonModule} from '@angular/material/button'; 
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-portal',
@@ -41,15 +41,15 @@ export class PortalComponent implements OnInit {
 
   retrieveEntries(): void {
     this.currUser = JSON.parse(window.sessionStorage.getItem('auth-user')).user;
-    this._entryDataService.getEntriesForAuthor(this.currUser.group+this.currUser.matnr)
-        .subscribe(
-          data => {
-            this.entries = data;
-            this.dataSource.data = this.entries;
-          },
-          error => {
-            console.log(error);
-          });
+    this._entryDataService.getEntriesForAuthor(this.currUser.group + this.currUser.matnr)
+      .subscribe(
+        data => {
+          this.entries = data;
+          this.dataSource.data = this.entries;
+        },
+        error => {
+          console.log(error);
+        });
   }
 
   retrieveUsers(): void {
@@ -67,17 +67,20 @@ export class PortalComponent implements OnInit {
   }
 
   openDialog(id: string, title: string): void {
-    const dialogRef = this.dialog.open(DeleteDialog, {
-      width: '20%',
-      data: { 
-        id: id,
-        title: title
-      }
-    });
+    const dialogRef = this.dialog
+      .open(DeleteDialog, {
+        width: '20%',
+        data: {
+          id: id,
+          title: title
+        }
+      });
 
-    dialogRef.afterClosed().subscribe(res => {
-      if (res) this.deleteEntry(id);
-    })
+    dialogRef.afterClosed().toPromise()
+      .then(() => {
+        this.deleteEntry(id);
+        setTimeout(() => { window.location.reload() }, 2000 );
+      });
   }
 }
 
@@ -88,7 +91,7 @@ export class PortalComponent implements OnInit {
 export class DeleteDialog {
   constructor(
     public dialogRef: MatDialogRef<DeleteDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData) {}
+    @Inject(MAT_DIALOG_DATA) public data: DialogData) { }
 }
 
 export interface DialogData {

@@ -101,12 +101,14 @@ export class AddEntryComponent implements OnInit {
 
   saveEntry(): void {
     var published, edited;
+    console.log(this.case);
     if (this.case == 'newFromTemplate' || this.case == 'new') {
-      published = new Date().toString();
-      edited = new Date().toString();
+      published = Date.now().toString();
+      edited = Date.now().toString();
+      this.id = '';
     } else {
       published = this.currEntry.publishedDate;
-      edited = new Date().toString();
+      edited = Date.now().toString();
     }
 
     const data: Entry = {
@@ -138,8 +140,8 @@ export class AddEntryComponent implements OnInit {
       specialField: this.currEntry.specialField,
       availableAsOfDate: new Date(this.currEntry.availableAsOfDate).toString()
     };
-
-    if (this.id === undefined || this.id == '') {
+    console.log(this.id);
+    if (this.id == undefined || this.id == null || this.id == '') {
       this._entryDataService.createEntry(data)
         .subscribe(
           response => {

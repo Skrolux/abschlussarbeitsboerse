@@ -29,7 +29,6 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     this.isAuthenticated = this._authService.checkAuthenticated();
     this.isStudent = this._tokenStorageService.getUser().user.group == 'k';
-    console.log(this.router.getCurrentNavigation.toString());
   }
 
   logOut(): void {

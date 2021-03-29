@@ -37,7 +37,8 @@ h1 {
 }
 
 .btn {
-    border-radius: 0;
+    border-radius: 4px;
+    margin-left: 1%;
 }
 
 .btn-right {
@@ -60,7 +61,7 @@ h1 {
 }
 
 .matFormWithSpace {
-    margin-left: 5px;
+    margin-left: 1%;
     background-color: #1e1e1e;
 }
 
@@ -74,6 +75,7 @@ h1 {
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-left: 2%;
 }
 
 :host .mat-checkbox {
@@ -82,3 +84,22 @@ h1 {
     font-weight: lighter !important;
     padding-left: 10px;
 }
+
+ .mat-card {
+    height: 100% !important;
+    position: relative;
+    overflow: hidden;
+  } 
+  
+  .mat-card-content {
+    max-height: 100% !important;
+    position: absolute;
+    overflow: auto;
+  }
+
+  .matFormCheckbox {
+    margin-left: 1%;
+    background-color: #1e1e1e;
+    padding: 1%;
+    border-radius: 4px;
+  }
